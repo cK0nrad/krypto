@@ -1,0 +1,24 @@
+{
+  "name": "krypto",
+  "version": "1.0.0",
+  "description": "NodeJS hashing library writen in C++",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cK0nrad/krypto.git"
+  },
+  "author": "cK0nrad",
+  "license": "ISC",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/cK0nrad/krypto/issues"
+  },
+  "homepage": "https://github.com/cK0nrad/krypto#readme",
+  "dependencies": {
+    "node-addon-api": "^3.0.2"
+  }
+}

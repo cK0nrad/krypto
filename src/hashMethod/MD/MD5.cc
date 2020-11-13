@@ -1,10 +1,16 @@
 /*
 https://github.com/pod32g/MD5/blob/master/md5.c
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cstdint>
+#include <string>
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <iomanip>
+#include "../../check.cpp"
 
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
 const uint32_t k[64] = {
@@ -23,13 +29,16 @@ const uint32_t k[64] = {
     0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039 ,
     0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1 ,
     0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1 ,
-    0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391 };
+    0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391
+};
 
 // r specifies the per-round shift amounts
-const uint32_t r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
+const uint32_t r[] = {
+    7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
     5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
     4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
-    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
+    6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21
+};
 
 // leftrotate function definition
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
@@ -56,7 +65,7 @@ void MD5_MAIN(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest) {
     uint32_t h0, h1, h2, h3;
 
     // Message (to prepare)
-    uint8_t *msg = NULL;
+    uint8_t *msg = nullptr;
 
     size_t new_len, offset;
     uint32_t w[16];
@@ -144,22 +153,27 @@ void MD5_MAIN(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest) {
     to_bytes(h3, digest + 12);
 }
 
-char *MD5(char *message) {
-    size_t len;
 
+std::string MD5_HASHING(std::string message) {
     uint8_t result[16];
-    // Allocate return result
-    char *ret;
-    ret = malloc(32);
 
-    //Main Hashing
-    len = strlen(message);
-    MD5_MAIN((uint8_t*)message, len, result);
-    memcpy(ret, result,16);
+    //Hashing
+    MD5_MAIN(reinterpret_cast<const uint8_t *>(&message[0]), message.length(), result);
+
     // prepare return result
-    for (int i = 0; i < 32; i+=2){
-        sprintf(&ret[i], "%2.2x", result[i/2]);
-        sprintf(&ret[i+1], "%x", result[i/2] % 16);
+    std::ostringstream hashedResult;
+    for (unsigned char i : result){
+        hashedResult  << std::hex << std::setw(2) << std::setprecision(2) << std::setfill('0') << static_cast<int>(i);
     }
-    return ret;
+
+    return hashedResult.str();
+}
+
+Napi::Value MD5(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    if(!check(info)) return env.Null();
+
+    std::string arg0 = info[0].As<Napi::String>();
+    Napi::String num = Napi::String::New(env, MD5_HASHING(arg0));
+    return reinterpret_cast<Napi::Value&&>(num);
 }

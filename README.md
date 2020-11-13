@@ -1,9 +1,9 @@
 # What's is it ?
 
-krypto is a Crypto library written in C as an Node.JS module. I've written every hash function by hand.
+Krypto is a crypto library written in C++ as an Node.JS module.
 
 # Supported algorithm
-    [❌] MD2 
+    [✔️] MD2 
     [❌] MD4
     [✔️] MD5
     [❌] MD6
@@ -46,3 +46,10 @@ krypto is a Crypto library written in C as an Node.JS module. I've written every
     [❌] MD5X    2-3-4-5
    
 # Usage
+
+```js
+    const krypro = require("krypro")
+    let MD5 = krypro.md5("Test") //0cbc6611f5540bd0809a388dc95a615b
+    let SDBM = krypro.sdbm("Test") //
+```
+    
