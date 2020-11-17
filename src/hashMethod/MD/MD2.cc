@@ -24,12 +24,12 @@ const uint8_t pi[] = {
     0xF2, 0xEF, 0xB7, 0x0E, 0x66, 0x58, 0xD0, 0xE4, 0xA6, 0x77, 0x72, 0xF8, 0xEB, 0x75, 0x4B, 0x0A,
     0x31, 0x44, 0x50, 0xB4, 0x8F, 0xED, 0x1F, 0x1A, 0xDB, 0x99, 0x8D, 0x33, 0x9F, 0x11, 0x83, 0x14};
 
-std::string MD2_MAIN(const uint8_t *message, const size_t messageLength)
+std::string MD2_MAIN(uint8_t *message, size_t messageLength)
 {
     //get amount and what to append to the message
-    static const size_t paddingLength = 16 - (messageLength % 16);
-    static const size_t newMessageLength = messageLength + paddingLength;
-    static const size_t paddedMessageLength = newMessageLength + 16;
+    size_t paddingLength = 16 - (messageLength % 16);
+    size_t newMessageLength = messageLength + paddingLength;
+    size_t paddedMessageLength = newMessageLength + 16;
 
     //new array for the new message
     std::vector<uint8_t> paddedMessage(paddedMessageLength);
@@ -98,6 +98,6 @@ Napi::Value MD2(const Napi::CallbackInfo &info)
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, MD2_MAIN(reinterpret_cast<const uint8_t *>(&arg0[0]), arg0.length()));
+    Napi::String num = Napi::String::New(env, MD2_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }

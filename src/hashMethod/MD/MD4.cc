@@ -25,11 +25,11 @@
 
 #define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
 
-std::string MD4_MAIN(const uint32_t *message, const size_t messageLength)
+std::string MD4_MAIN(uint32_t *message, size_t messageLength)
 {
     //Where to add size
-    static const size_t shiftingPosition = (messageLength / 4);
-    static const size_t shiftingAmount = 8 * (messageLength % 4);
+    size_t shiftingPosition = (messageLength / 4);
+    size_t shiftingAmount = 8 * (messageLength % 4);
 
     //Let x=MessageLength % 64 (modulo 64), If x=0, we pad with 64 0 bytes. If x !=0, then we check if x > 56. If it's the case we pad with n=64-(x-56) or if it's smaller than 56 n = 56-x
     size_t paddingLength = 448;
@@ -46,8 +46,8 @@ std::string MD4_MAIN(const uint32_t *message, const size_t messageLength)
     }
 
     //Add the shifting to the padding to get full 32bit size, bcs we will add 0x80 in the same last one if the message length%32!=0
-    static const size_t newMessageLength = (messageLength / 4) + ((paddingLength + shiftingAmount) / 32);
-    static const size_t paddedMessageLength = newMessageLength + 2;
+    size_t newMessageLength = (messageLength / 4) + ((paddingLength + shiftingAmount) / 32);
+    size_t paddedMessageLength = newMessageLength + 2;
 
     //new array for the new message
     std::vector<uint32_t> paddedMessage(paddedMessageLength, 0);
@@ -68,7 +68,7 @@ std::string MD4_MAIN(const uint32_t *message, const size_t messageLength)
     uint32_t AA, BB, CC, DD;
 
     //Define X[16]
-    uint32_t X[16];
+    uint32_t X[16] = {0};
     for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
     {
         //Fill X[] with the 16 currents words
@@ -160,7 +160,6 @@ Napi::Value MD4(const Napi::CallbackInfo &info)
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    std::string hashed = MD4_MAIN(reinterpret_cast<const uint32_t *>(&arg0[0]), arg0.length());
-    Napi::String num = Napi::String::New(env, hashed);
+    Napi::String num = Napi::String::New(env, MD4_MAIN((uint32_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }
