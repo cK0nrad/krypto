@@ -8,3 +8,6 @@ build/
 node_modules/
 
 CMakeLists.txt
+
+package-lock.json
+
