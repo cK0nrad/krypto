@@ -82,43 +82,22 @@ std::string MD4_MAIN(uint32_t *message, size_t messageLength)
         BB = B;
         CC = C;
         DD = D;
-
         //Round 1
-        r1(A, B, C, D, X[0], 3);
-        r1(D, A, B, C, X[1], 7);
-        r1(C, D, A, B, X[2], 11);
-        r1(B, C, D, A, X[3], 19);
-        r1(A, B, C, D, X[4], 3);
-        r1(D, A, B, C, X[5], 7);
-        r1(C, D, A, B, X[6], 11);
-        r1(B, C, D, A, X[7], 19);
-        r1(A, B, C, D, X[8], 3);
-        r1(D, A, B, C, X[9], 7);
-        r1(C, D, A, B, X[10], 11);
-        r1(B, C, D, A, X[11], 19);
-        r1(A, B, C, D, X[12], 3);
-        r1(D, A, B, C, X[13], 7);
-        r1(C, D, A, B, X[14], 11);
-        r1(B, C, D, A, X[15], 19);
-
+        for (int i = 0; i < 4; i++)
+        {
+            r1(A, B, C, D, X[0 + 4 * i], 3);
+            r1(D, A, B, C, X[1 + 4 * i], 7);
+            r1(C, D, A, B, X[2 + 4 * i], 11);
+            r1(B, C, D, A, X[3 + 4 * i], 19);
+        }
         //Round 2
-        r2(A, B, C, D, X[0], 3);
-        r2(D, A, B, C, X[4], 5);
-        r2(C, D, A, B, X[8], 9);
-        r2(B, C, D, A, X[12], 13);
-        r2(A, B, C, D, X[1], 3);
-        r2(D, A, B, C, X[5], 5);
-        r2(C, D, A, B, X[9], 9);
-        r2(B, C, D, A, X[13], 13);
-        r2(A, B, C, D, X[2], 3);
-        r2(D, A, B, C, X[6], 5);
-        r2(C, D, A, B, X[10], 9);
-        r2(B, C, D, A, X[14], 13);
-        r2(A, B, C, D, X[3], 3);
-        r2(D, A, B, C, X[7], 5);
-        r2(C, D, A, B, X[11], 9);
-        r2(B, C, D, A, X[15], 13);
-
+        for (int i = 0; i < 4; i++)
+        {
+            r2(A, B, C, D, X[0 + i], 3);
+            r2(D, A, B, C, X[4 + i], 5);
+            r2(C, D, A, B, X[8 + i], 9);
+            r2(B, C, D, A, X[12 + i], 13);
+        }
         //Round 3
         r3(A, B, C, D, X[0], 3);
         r3(D, A, B, C, X[8], 9);
@@ -138,10 +117,10 @@ std::string MD4_MAIN(uint32_t *message, size_t messageLength)
         r3(B, C, D, A, X[15], 15);
 
         //Update register
-        A = A + AA;
-        B = B + BB;
-        C = C + CC;
-        D = D + DD;
+        A += AA;
+        B += BB;
+        C += CC;
+        D += DD;
     }
 
     //Process and output hashed message

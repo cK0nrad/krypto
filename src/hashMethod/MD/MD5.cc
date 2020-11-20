@@ -1,15 +1,19 @@
 /*
+inspired highly by:
 https://github.com/pod32g/MD5/blob/master/md5.c
- */
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cstdint>
+*/
 #include <string>
 #include <iostream>
-#include <vector>
-#include <sstream>
+#include <cstring>
 #include <iomanip>
+#include <sstream>
+#include <vector>
+#include <bitset>
+
+#ifndef endia
+#define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
+#endif
+
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
 const uint32_t k[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
@@ -36,139 +40,114 @@ const uint32_t r[] = {
     4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
     6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
 
-// leftrotate function definition
-//#define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
-
-void to_bytes(uint32_t val, uint8_t *bytes)
+std::string MD5_MAIN(uint32_t *message, size_t messageLength)
 {
-    bytes[0] = (uint8_t)val;
-    bytes[1] = (uint8_t)(val >> 8u);
-    bytes[2] = (uint8_t)(val >> 16u);
-    bytes[3] = (uint8_t)(val >> 24u);
-}
-
-uint32_t to_int32(const uint8_t *bytes)
-{
-    return (uint32_t)bytes[0] | ((uint32_t)bytes[1] << 8u) | ((uint32_t)bytes[2] << 16u) | ((uint32_t)bytes[3] << 24u);
-}
-
-void MD5_MAIN(const uint8_t *initial_msg, size_t initial_len, uint8_t *digest)
-{
-
-    // These vars will contain the hash
-    uint32_t h0, h1, h2, h3;
-
-    // Message (to prepare)
-    uint8_t *msg = nullptr;
-
-    size_t new_len, offset;
-    uint32_t w[16];
-    uint32_t a, b, c, d, i, f, g, temp;
-
-    // Initialize variables - simple count in nibbles:
-    h0 = 0x67452301;
-    h1 = 0xefcdab89;
-    h2 = 0x98badcfe;
-    h3 = 0x10325476;
-
-    //Pre-processing:
-    //append "1" bit to message
-    //append "0" bits until message length in bits ≡ 448 (mod 512)
-    //append length mod (2^64) to message
-
-    for (new_len = initial_len + 1; new_len % (512 / 8) != 448 / 8; new_len++)
-        ;
-
-    msg = (uint8_t *)malloc(new_len + 8);
-    memcpy(msg, initial_msg, initial_len);
-    msg[initial_len] = 0x80; // append the "1" bit; most significant bit is "first"
-    for (offset = initial_len + 1; offset < new_len; offset++)
-        msg[offset] = 0; // append "0" bits
-
-    // append the len in bits at the end of the buffer.
-    to_bytes(initial_len * 8, msg + new_len);
-    // initial_len>>29 == initial_len*8>>32, but avoids overflow.
-    to_bytes(initial_len >> 29u, msg + new_len + 4);
-
-    // Process the message in successive 512-bit chunks:
-    //for each 512-bit chunk of message:
-    for (offset = 0; offset < new_len; offset += (512 / 8))
+    //Where to add size
+    size_t shiftingPosition = (messageLength / 4);
+    size_t shiftingAmount = 8 * (messageLength % 4);
+    //How many array entry to fill the message
+    size_t paddingLength = 448;
+    if ((messageLength * 8) % 512 != 0)
     {
+        if (((messageLength * 8) % 512) > 448)
+        {
+            paddingLength = 512 - (((messageLength * 8) % 512) - 448);
+        }
+        else
+        {
+            paddingLength = 448 - ((messageLength * 8) % 512);
+        }
+    }
+    //Total size of the message + padding + shiftingAmount + 2*32 entry for the length
+    size_t newMessageLength = (messageLength / 4) + ((paddingLength + shiftingAmount) / 32);
+    size_t paddedMessageLength = newMessageLength + 2;
 
-        // break chunk into sixteen 32-bit words w[j], 0 ≤ j ≤ 15
-        for (i = 0; i < 16; i++)
-            w[i] = to_int32(msg + offset + i * 4);
+    //Vector that contain message + padding + length
+    std::vector<uint32_t> paddedMessage(paddedMessageLength, 0);
+    memcpy(&paddedMessage[0], message, messageLength);
 
-        // Initialize hash value for this chunk:
-        a = h0;
-        b = h1;
-        c = h2;
-        d = h3;
+    //Append 0x80 at then end of the message (10000000)
+    //Padding
+    paddedMessage[shiftingPosition] += (0x80 << shiftingAmount);
 
-        // Main loop:
-        for (i = 0; i < 64; i++)
+    //Appending initial length
+    paddedMessage[paddedMessageLength - 1] = ((messageLength >> 29) & 0xFFFFFFFF);
+    paddedMessage[paddedMessageLength - 2] = ((messageLength << 3) & 0xFFFFFFFF);
+
+    //Hash calculation
+    //For loop of 16 words per rounds.
+
+    //MD Buffer
+    uint32_t A = 0x67452301;
+    uint32_t B = 0xefcdab89;
+    uint32_t C = 0x98badcfe;
+    uint32_t D = 0x10325476;
+    uint32_t AA, BB, CC, DD, fghi, tempa;
+    uint32_t X[16] = {0};
+    for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
+    {
+        //Fill X[] with the 16 currents words
+        for (size_t j = 0; j < 16; j++)
+        {
+            X[j] = paddedMessage[offset * 16 + j];
+        }
+        //Save A B C & D
+        AA = A;
+        BB = B;
+        CC = C;
+        DD = D;
+        //There's 64 round so we will loop through these 64 round and check where we are
+
+        for (size_t i = 0; i < 64; i++)
         {
 
+            //If i < 16 => Round 1; 16 < i < 32 => Round 2; 32 < i < 48 => Round 3; 48 < i < 64 => Round 4;
             if (i < 16)
             {
-                f = (b & c) | ((~b) & d);
-                g = i;
+                //Round 1
+                fghi = (B & C) | ((~B) & D);
+                fghi = (A + fghi + k[i] + X[i]);
+                fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else if (i < 32)
             {
-                f = (d & b) | ((~d) & c);
-                g = (5 * i + 1) % 16;
+                //Round 2
+                fghi = (D & B) | ((~D) & C);
+                fghi = (A + fghi + k[i] + X[(5 * i + 1) % 16]);
+                fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else if (i < 48)
             {
-                f = b ^ c ^ d;
-                g = (3 * i + 5) % 16;
+                //Round 3
+                fghi = B ^ C ^ D;
+                fghi = (A + fghi + k[i] + X[(3 * i + 5) % 16]);
+                fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else
             {
-                f = c ^ (b | (~d));
-                g = (7 * i) % 16;
+                //Round 4
+                fghi = C ^ (B | (~D));
+                fghi = (A + fghi + k[i] + X[(7 * i) % 16]);
+                fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
-
-            temp = d;
-            d = c;
-            c = b;
-            b = b + LEFTROTATE((a + f + k[i] + w[g]), r[i]);
-            a = temp;
+            //Set a,b,c,d for the next loop
+            tempa = D;
+            D = C;
+            C = B;
+            B = fghi;
+            A = tempa;
         }
-
-        // Add this chunk's hash to result so far:
-        h0 += a;
-        h1 += b;
-        h2 += c;
-        h3 += d;
+        A += AA;
+        B += BB;
+        C += CC;
+        D += DD;
     }
-
-    // cleanup
-    free(msg);
-
-    //var char digest[16] := h0 append h1 append h2 append h3 //(Output is in little-endian)
-    to_bytes(h0, digest);
-    to_bytes(h1, digest + 4);
-    to_bytes(h2, digest + 8);
-    to_bytes(h3, digest + 12);
-}
-
-std::string MD5_HASHING(std::string message)
-{
-    uint8_t result[16];
-
-    //Hashing
-    MD5_MAIN(reinterpret_cast<const uint8_t *>(&message[0]), message.length(), result);
-
-    // prepare return result
-    std::ostringstream hashedResult;
-    for (unsigned char i : result)
-    {
-        hashedResult << std::hex << std::setw(2) << std::setprecision(2) << std::setfill('0') << static_cast<int>(i);
-    }
-
-    return hashedResult.str();
+    std::ostringstream md5Message;
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(A);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(B);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(C);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(D);
+    return md5Message.str();
 }
 
 Napi::Value MD5(const Napi::CallbackInfo &info)
@@ -178,6 +157,6 @@ Napi::Value MD5(const Napi::CallbackInfo &info)
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, MD5_HASHING(arg0));
+    Napi::String num = Napi::String::New(env, MD5_MAIN((uint32_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }
