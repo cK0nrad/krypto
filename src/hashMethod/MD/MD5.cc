@@ -8,7 +8,6 @@ https://github.com/pod32g/MD5/blob/master/md5.c
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include <bitset>
 
 #ifndef endia
 #define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
@@ -76,8 +75,6 @@ std::string MD5_MAIN(uint32_t *message, size_t messageLength)
 
     //Hash calculation
     //For loop of 16 words per rounds.
-
-    //MD Buffer
     uint32_t A = 0x67452301;
     uint32_t B = 0xefcdab89;
     uint32_t C = 0x98badcfe;

@@ -3,15 +3,16 @@
 Krypto is a crypto library written in C++ as an Node.JS module.
 
 # Supported algorithm
-    [✔️] MD2 
+
+    [✔️] MD2
     [✔️] MD4
     [✔️] MD5
-    [❌] MD6
-    [❌] SHA1
-    [❌] SHA224
-    [❌] SHA256
-    [❌] SHA384
-    [❌] SHA512
+    [❌] SHA-1
+    [❌] SHA-2
+    [❌] SHA-224
+    [❌] SHA-256
+    [❌] SHA-384
+    [❌] SHA-512
     [❌] RIPEMD128
     [❌] RIPEMD160
     [❌] RIPEMD256
@@ -44,12 +45,11 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [❌] HAVAL-4 128-160-192-224-256
     [❌] HAVAL-5 128-160-192-224-256
     [❌] MD5X    2-3-4-5
-   
+
 # Usage
 
 ```js
-    const krypro = require("krypro")
-    let MD5 = krypro.md5("Test") //0cbc6611f5540bd0809a388dc95a615b
-    let SDBM = krypro.sdbm("Test") //
+const krypro = require("krypro");
+let MD5 = krypro.md5("Test"); //0cbc6611f5540bd0809a388dc95a615b
+let SDBM = krypro.sdbm("Test"); //
 ```
-    

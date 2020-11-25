@@ -4,7 +4,6 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
-#include <bitset>
 #include <iomanip>
 
 #define F(X, Y, Z) (((X) & (Y)) | ((~(X)) & (Z)))
