@@ -33,17 +33,15 @@ std::string SHA1_MAIN(uint32_t *message, size_t messageLength)
 
     //Vector that contain message + padding + length
     std::vector<uint32_t> paddedMessage(paddedMessageLength, 0);
-
-    // memcpy(&paddedMessage[0], message, messageLength);
-    for (int i = 0; i <= (messageLength + (messageLength % 4)) / 4; i++)
+    size_t i;
+    for (i = 0; i <= ((messageLength - messageLength % 4) / 4); ++i)
     {
         paddedMessage[i] = (message[i] & 0xFF000000) >> 24;
         paddedMessage[i] |= (message[i] & 0x00FF0000) >> 8;
         paddedMessage[i] |= (message[i] & 0x0000FF00) << 8;
         paddedMessage[i] |= (message[i] & 0x000000FF) << 24;
     }
-    /* for (std::vector<uint8_t>::const_iterator i = paddedMessage.begin(); i != paddedMessage.end(); ++i)
-        std::cout << std::bitset<8>(*i) << ' ';*/
+
     //Append 0x80 at then end of the message (10000000)
     //Padding
     paddedMessage[shiftingPosition] += (0x80 << (24 - shiftingAmount));
@@ -63,8 +61,8 @@ std::string SHA1_MAIN(uint32_t *message, size_t messageLength)
     uint32_t H4 = 0xC3D2E1F0;
 
     uint32_t A, B, C, D, E, K, temp, f;
-    uint32_t W[80];
-    size_t i;
+    uint32_t W[80] = {0};
+
     for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
     {
         //Original message
@@ -142,6 +140,6 @@ Napi::Value SHA1(const Napi::CallbackInfo &info)
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, SHA1_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
+    Napi::String num = Napi::String::New(env, SHA1_MAIN((uint32_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }
