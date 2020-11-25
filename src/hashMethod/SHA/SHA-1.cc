@@ -8,9 +8,7 @@ https://www.ietf.org/rfc/rfc3174.txt
 #include <sstream>
 #include <vector>
 #include <bitset>
-#ifndef endia
-#define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
-#endif
+
 std::string SHA1_MAIN(uint32_t *message, size_t messageLength)
 {
     //Where to add size
