@@ -7,7 +7,7 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [✔️] MD2
     [✔️] MD4
     [✔️] MD5
-    [❌] SHA-1
+    [✔️] SHA-1
     [❌] SHA-2
     [❌] SHA-224
     [❌] SHA-256
