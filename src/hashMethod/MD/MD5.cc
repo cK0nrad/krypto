@@ -14,7 +14,7 @@ https://github.com/pod32g/MD5/blob/master/md5.c
 #endif
 
 // Constants are the integer part of the sines of integers (in radians) * 2^32.
-const uint32_t k[64] = {
+const uint32_t kMD5[64] = {
     0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
     0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
     0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
@@ -103,28 +103,28 @@ std::string MD5_MAIN(uint32_t *message, size_t messageLength)
             {
                 //Round 1
                 fghi = (B & C) | ((~B) & D);
-                fghi = (A + fghi + k[i] + X[i]);
+                fghi = (A + fghi + kMD5[i] + X[i]);
                 fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else if (i < 32)
             {
                 //Round 2
                 fghi = (D & B) | ((~D) & C);
-                fghi = (A + fghi + k[i] + X[(5 * i + 1) % 16]);
+                fghi = (A + fghi + kMD5[i] + X[(5 * i + 1) % 16]);
                 fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else if (i < 48)
             {
                 //Round 3
                 fghi = B ^ C ^ D;
-                fghi = (A + fghi + k[i] + X[(3 * i + 5) % 16]);
+                fghi = (A + fghi + kMD5[i] + X[(3 * i + 5) % 16]);
                 fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             else
             {
                 //Round 4
                 fghi = C ^ (B | (~D));
-                fghi = (A + fghi + k[i] + X[(7 * i) % 16]);
+                fghi = (A + fghi + kMD5[i] + X[(7 * i) % 16]);
                 fghi = B + ((fghi << r[i]) | fghi >> (32 - r[i]));
             }
             //Set a,b,c,d for the next loop
