@@ -7,8 +7,9 @@ https://csrc.nist.gov/csrc/media/publications/fips/180/4/final/documents/fips180
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include "./SHA.h"
 
-std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
+std::string SHA224_MAIN(uint8_t *message, size_t messageLength)
 {
     //Where to add size
     size_t shiftingPosition = (messageLength / 4);
@@ -33,8 +34,7 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
 
     //Vector that contain message + padding + length
     std::vector<uint32_t> paddedMessage(paddedMessageLength, 0);
-    size_t i;
-    for (i = 0; i < messageLength; i++)
+    for (size_t i = 0; i < messageLength; i++)
     {
         paddedMessage[((i + 4) / 4) - 1] += (message[i] << (24 - (8 * (i % 4))));
     }
@@ -51,16 +51,17 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
     //For loop of 16 words per rounds.
 
     //Initialize register
-    uint32_t H0 = 0x6a09e667;
-    uint32_t H1 = 0xbb67ae85;
-    uint32_t H2 = 0x3c6ef372;
-    uint32_t H3 = 0xa54ff53a;
-    uint32_t H4 = 0x510e527f;
-    uint32_t H5 = 0x9b05688c;
-    uint32_t H6 = 0x1f83d9ab;
-    uint32_t H7 = 0x5be0cd19;
+    uint32_t H0 = 0xc1059ed8;
+    uint32_t H1 = 0x367cd507;
+    uint32_t H2 = 0x3070dd17;
+    uint32_t H3 = 0xf70e5939;
+    uint32_t H4 = 0xffc00b31;
+    uint32_t H5 = 0x68581511;
+    uint32_t H6 = 0x64f98fa7;
+    uint32_t H7 = 0xbefa4fa4;
 
     uint32_t A, B, C, D, E, F, G, H, T1, T2;
+    size_t i;
     uint32_t W[64] = {0};
 
     for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
@@ -118,17 +119,16 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
     md5Message << std::hex << std::setfill('0') << std::setw(8) << (H4);
     md5Message << std::hex << std::setfill('0') << std::setw(8) << (H5);
     md5Message << std::hex << std::setfill('0') << std::setw(8) << (H6);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H7);
     return md5Message.str();
 }
 
-Napi::Value SHA256(const Napi::CallbackInfo &info)
+Napi::Value SHA224(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (!check(info))
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, SHA256_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
+    Napi::String num = Napi::String::New(env, SHA224_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }

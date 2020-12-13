@@ -8,61 +8,61 @@ https://csrc.nist.gov/csrc/media/publications/fips/180/4/final/documents/fips180
 #include <sstream>
 #include <vector>
 
-std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
+std::string SHA512_MAIN(uint8_t *message, size_t messageLength)
 {
     //Where to add size
-    size_t shiftingPosition = (messageLength / 4);
-    size_t shiftingAmount = 8 * (messageLength % 4);
+    size_t shiftingPosition = (messageLength / 8);
+    size_t shiftingAmount = 8 * (messageLength % 8);
 
     //How many array entry to fill the message
-    size_t paddingLength = 448;
-    if ((messageLength * 8) % 512 != 0)
+    size_t paddingLength = 896;
+    if ((messageLength * 8) % 1024 != 0)
     {
-        if (((messageLength * 8) % 512) > 448)
+        if (((messageLength * 8) % 1024) > 896)
         {
-            paddingLength = 512 - (((messageLength * 8) % 512) - 448);
+            paddingLength = 512 - (((messageLength * 8) % 1024) - 896);
         }
         else
         {
-            paddingLength = 448 - ((messageLength * 8) % 512);
+            paddingLength = 896 - ((messageLength * 8) % 1024);
         }
     }
-    //Total size of the message + padding + shiftingAmount + 2*32 entry for the length
-    size_t newMessageLength = (messageLength / 4) + ((paddingLength + shiftingAmount) / 32);
+
+    //Total size of the message + padding + shiftingAmount + 2*64 entry for the length
+    size_t newMessageLength = (messageLength / 8) + ((paddingLength + shiftingAmount) / 64);
     size_t paddedMessageLength = newMessageLength + 2;
 
     //Vector that contain message + padding + length
-    std::vector<uint32_t> paddedMessage(paddedMessageLength, 0);
-    size_t i;
-    for (i = 0; i < messageLength; i++)
+    std::vector<uint64_t> paddedMessage(paddedMessageLength, 0);
+    for (size_t i = 0; i < messageLength; i++)
     {
-        paddedMessage[((i + 4) / 4) - 1] += (message[i] << (24 - (8 * (i % 4))));
+        paddedMessage[((i + 8) / 8) - 1] += ((uint64_t)message[i] << (56 - (8 * (i % 8))));
     }
 
     //Append 0x80 at then end of the message (10000000)
     //Padding
-    paddedMessage[shiftingPosition] += (0x80 << (24 - shiftingAmount));
+    paddedMessage[shiftingPosition] += (((uint64_t)0x80) << (56 - shiftingAmount));
 
     //Appending initial length
-    paddedMessage[paddedMessageLength - 1] = ((messageLength << 3) & 0xFFFFFFFF);
-    paddedMessage[paddedMessageLength - 2] = ((messageLength >> 29) & 0xFFFFFFFF);
+    paddedMessage[paddedMessageLength - 1] = ((messageLength << 3) & 0xFFFFFFFFFFFFFFFF);
+    paddedMessage[paddedMessageLength - 2] = ((messageLength >> 61) & 0xFFFFFFFFFFFFFFFF);
 
     //Hash calculation
     //For loop of 16 words per rounds.
 
     //Initialize register
-    uint32_t H0 = 0x6a09e667;
-    uint32_t H1 = 0xbb67ae85;
-    uint32_t H2 = 0x3c6ef372;
-    uint32_t H3 = 0xa54ff53a;
-    uint32_t H4 = 0x510e527f;
-    uint32_t H5 = 0x9b05688c;
-    uint32_t H6 = 0x1f83d9ab;
-    uint32_t H7 = 0x5be0cd19;
+    uint64_t H0 = 0x6a09e667f3bcc908;
+    uint64_t H1 = 0xbb67ae8584caa73b;
+    uint64_t H2 = 0x3c6ef372fe94f82b;
+    uint64_t H3 = 0xa54ff53a5f1d36f1;
+    uint64_t H4 = 0x510e527fade682d1;
+    uint64_t H5 = 0x9b05688c2b3e6c1f;
+    uint64_t H6 = 0x1f83d9abfb41bd6b;
+    uint64_t H7 = 0x5be0cd19137e2179;
 
-    uint32_t A, B, C, D, E, F, G, H, T1, T2;
-    uint32_t W[64] = {0};
-
+    uint64_t A, B, C, D, E, F, G, H, T1, T2;
+    size_t i;
+    uint64_t W[80] = {0};
     for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
     {
         //Original message
@@ -72,9 +72,9 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
         }
 
         //Expension
-        for (i = 16; i < 64; i++)
+        for (i = 16; i < 80; i++)
         {
-            W[i] = (Lsigma1(W[i - 2]) + W[i - 7] + Lsigma0(W[i - 15]) + W[i - 16]);
+            W[i] = (LLsigma1(W[i - 2]) + W[i - 7] + LLsigma0(W[i - 15]) + W[i - 16]);
         }
 
         A = H0;
@@ -86,10 +86,10 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
         G = H6;
         H = H7;
 
-        for (i = 0; i < 64; i++)
+        for (i = 0; i < 80; i++)
         {
-            T1 = H + Usigma1(E) + Ch(E, F, G) + kSHA256[i] + W[i];
-            T2 = Usigma0(A) + Maj(A, B, C);
+            T1 = H + LUsigma1(E) + Ch(E, F, G) + kSHA512[i] + W[i];
+            T2 = LUsigma0(A) + Maj(A, B, C);
 
             H = G;
             G = F;
@@ -122,13 +122,13 @@ std::string SHA256_MAIN(uint8_t *message, size_t messageLength)
     return md5Message.str();
 }
 
-Napi::Value SHA256(const Napi::CallbackInfo &info)
+Napi::Value SHA512(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     if (!check(info))
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, SHA256_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
+    Napi::String num = Napi::String::New(env, SHA512_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }
