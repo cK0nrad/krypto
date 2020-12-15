@@ -27,10 +27,10 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [❌] MD5X    2-3-4-5
     [❌] MURMUR3
     [❌] PEARSON
-    [❌] RIPEMD128
-    [❌] RIPEMD160
-    [❌] RIPEMD256
-    [❌] RIPEMD320
+    [✔️] RIPEMD128
+    [✔️] RIPEMD160
+    [✔️] RIPEMD256
+    [✔️] RIPEMD320
     [✔️] SHA-1
     [✔️] SHA-224
     [✔️] SHA-256
