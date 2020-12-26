@@ -1,19 +1,28 @@
-#define SHR(X, N) (X >> N)
-#define ROTR(X, N) ((X >> N) | (X << ((sizeof(X) << 3) - N)))
+#ifndef GENERAL
+#define LEFTROTATE(A, N) (((A) << (N)) | ((A) >> (32 - (N))))
+#define RIGHTROTATE(X, N) ((X >> N) | (X << ((sizeof(X) << 3) - N)))
+#define ENDIAN(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
+#define GENERAL
+#endif
 
-#define Usigma0(X) (ROTR(X, 2) ^ ROTR(X, 13) ^ ROTR(X, 22))
-#define Usigma1(X) (ROTR(X, 6) ^ ROTR(X, 11) ^ ROTR(X, 25))
-#define Lsigma0(X) (ROTR(X, 7) ^ ROTR(X, 18) ^ SHR(X, 3))
-#define Lsigma1(X) (ROTR(X, 17) ^ ROTR(X, 19) ^ SHR(X, 10))
-#define Ch(X, Y, Z) ((X & Y) ^ (~X & Z))
-#define Maj(X, Y, Z) ((X & Y) ^ (X & Z) ^ (Y & Z))
+#ifndef SHA_SHR
 
-#define LUsigma0(X) (ROTR(X, 28) ^ ROTR(X, 34) ^ ROTR(X, 39))
-#define LUsigma1(X) (ROTR(X, 14) ^ ROTR(X, 18) ^ ROTR(X, 41))
-#define LLsigma0(X) (ROTR(X, 1) ^ ROTR(X, 8) ^ SHR(X, 7))
-#define LLsigma1(X) (ROTR(X, 19) ^ ROTR(X, 61) ^ SHR(X, 6))
+#define SHA_SHR(X, N) (X >> N)
 
-const uint32_t kSHA256[64] = {
+#define SHA_Usigma0(X) (RIGHTROTATE(X, 2) ^ RIGHTROTATE(X, 13) ^ RIGHTROTATE(X, 22))
+#define SHA_Usigma1(X) (RIGHTROTATE(X, 6) ^ RIGHTROTATE(X, 11) ^ RIGHTROTATE(X, 25))
+#define SHA_Lsigma0(X) (RIGHTROTATE(X, 7) ^ RIGHTROTATE(X, 18) ^ SHA_SHR(X, 3))
+#define SHA_Lsigma1(X) (RIGHTROTATE(X, 17) ^ RIGHTROTATE(X, 19) ^ SHA_SHR(X, 10))
+
+#define SHA_LUsigma0(X) (RIGHTROTATE(X, 28) ^ RIGHTROTATE(X, 34) ^ RIGHTROTATE(X, 39))
+#define SHA_LUsigma1(X) (RIGHTROTATE(X, 14) ^ RIGHTROTATE(X, 18) ^ RIGHTROTATE(X, 41))
+#define SHA_LLsigma0(X) (RIGHTROTATE(X, 1) ^ RIGHTROTATE(X, 8) ^ SHA_SHR(X, 7))
+#define SHA_LLsigma1(X) (RIGHTROTATE(X, 19) ^ RIGHTROTATE(X, 61) ^ SHA_SHR(X, 6))
+
+#define SHA_Ch(X, Y, Z) ((X & Y) ^ (~X & Z))
+#define SHA_Maj(X, Y, Z) ((X & Y) ^ (X & Z) ^ (Y & Z))
+
+const uint32_t SHA256_k[64] = {
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
     0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
     0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
@@ -31,7 +40,7 @@ const uint32_t kSHA256[64] = {
     0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
     0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
 
-const uint64_t kSHA512[80] = {
+const uint64_t SHA512_k[80] = {
     0x428a2f98d728ae22, 0x7137449123ef65cd, 0xb5c0fbcfec4d3b2f, 0xe9b5dba58189dbbc, 0x3956c25bf348b538,
     0x59f111f1b605d019, 0x923f82a4af194f9b, 0xab1c5ed5da6d8118, 0xd807aa98a3030242, 0x12835b0145706fbe,
     0x243185be4ee4b28c, 0x550c7dc3d5ffb4e2, 0x72be5d74f27b896f, 0x80deb1fe3b1696b1, 0x9bdc06a725c71235,
@@ -48,3 +57,5 @@ const uint64_t kSHA512[80] = {
     0xd186b8c721c0c207, 0xeada7dd6cde0eb1e, 0xf57d4f7fee6ed178, 0x06f067aa72176fba, 0x0a637dc5a2c898a6,
     0x113f9804bef90dae, 0x1b710b35131c471b, 0x28db77f523047d84, 0x32caab7b40c72493, 0x3c9ebe0a15c9bebc,
     0x431d67c49c100d4c, 0x4cc5d4becb3e42b6, 0x597f299cfc657e2a, 0x5fcb6fab3ad6faec, 0x6c44198c4a475817};
+
+#endif

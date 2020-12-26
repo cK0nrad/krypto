@@ -5,24 +5,7 @@
 #include <vector>
 #include <cstring>
 #include <iomanip>
-
-#define F(X, Y, Z) (((X) & (Y)) | ((~(X)) & (Z)))
-#define G(X, Y, Z) (((X) & (Y)) | ((X) & (Z)) | ((Y) & (Z)))
-#define H(X, Y, Z) ((X) ^ (Y) ^ (Z))
-
-#define LEFTROTATE(A, N) (((A) << (N)) | ((A) >> (32 - (N))))
-
-#define r1(a, b, c, d, x, s) \
-    a += F(b, c, d) + x;     \
-    a = LEFTROTATE(a, s);
-#define r2(a, b, c, d, x, s)                    \
-    a += G(b, c, d) + x + (uint32_t)0x5A827999; \
-    a = LEFTROTATE(a, s);
-#define r3(a, b, c, d, x, s)                    \
-    a += H(b, c, d) + x + (uint32_t)0x6ED9EBA1; \
-    a = LEFTROTATE(a, s);
-
-#define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
+#include "MD.h"
 
 std::string MD4_MAIN(uint32_t *message, size_t messageLength)
 {
@@ -84,36 +67,36 @@ std::string MD4_MAIN(uint32_t *message, size_t messageLength)
         //Round 1
         for (int i = 0; i < 4; i++)
         {
-            r1(A, B, C, D, X[0 + 4 * i], 3);
-            r1(D, A, B, C, X[1 + 4 * i], 7);
-            r1(C, D, A, B, X[2 + 4 * i], 11);
-            r1(B, C, D, A, X[3 + 4 * i], 19);
+            MD4_r1(A, B, C, D, X[0 + 4 * i], 3);
+            MD4_r1(D, A, B, C, X[1 + 4 * i], 7);
+            MD4_r1(C, D, A, B, X[2 + 4 * i], 11);
+            MD4_r1(B, C, D, A, X[3 + 4 * i], 19);
         }
         //Round 2
         for (int i = 0; i < 4; i++)
         {
-            r2(A, B, C, D, X[0 + i], 3);
-            r2(D, A, B, C, X[4 + i], 5);
-            r2(C, D, A, B, X[8 + i], 9);
-            r2(B, C, D, A, X[12 + i], 13);
+            MD4_r2(A, B, C, D, X[0 + i], 3);
+            MD4_r2(D, A, B, C, X[4 + i], 5);
+            MD4_r2(C, D, A, B, X[8 + i], 9);
+            MD4_r2(B, C, D, A, X[12 + i], 13);
         }
         //Round 3
-        r3(A, B, C, D, X[0], 3);
-        r3(D, A, B, C, X[8], 9);
-        r3(C, D, A, B, X[4], 11);
-        r3(B, C, D, A, X[12], 15);
-        r3(A, B, C, D, X[2], 3);
-        r3(D, A, B, C, X[10], 9);
-        r3(C, D, A, B, X[6], 11);
-        r3(B, C, D, A, X[14], 15);
-        r3(A, B, C, D, X[1], 3);
-        r3(D, A, B, C, X[9], 9);
-        r3(C, D, A, B, X[5], 11);
-        r3(B, C, D, A, X[13], 15);
-        r3(A, B, C, D, X[3], 3);
-        r3(D, A, B, C, X[11], 9);
-        r3(C, D, A, B, X[7], 11);
-        r3(B, C, D, A, X[15], 15);
+        MD4_r3(A, B, C, D, X[0], 3);
+        MD4_r3(D, A, B, C, X[8], 9);
+        MD4_r3(C, D, A, B, X[4], 11);
+        MD4_r3(B, C, D, A, X[12], 15);
+        MD4_r3(A, B, C, D, X[2], 3);
+        MD4_r3(D, A, B, C, X[10], 9);
+        MD4_r3(C, D, A, B, X[6], 11);
+        MD4_r3(B, C, D, A, X[14], 15);
+        MD4_r3(A, B, C, D, X[1], 3);
+        MD4_r3(D, A, B, C, X[9], 9);
+        MD4_r3(C, D, A, B, X[5], 11);
+        MD4_r3(B, C, D, A, X[13], 15);
+        MD4_r3(A, B, C, D, X[3], 3);
+        MD4_r3(D, A, B, C, X[11], 9);
+        MD4_r3(C, D, A, B, X[7], 11);
+        MD4_r3(B, C, D, A, X[15], 15);
 
         //Update register
         A += AA;
@@ -124,10 +107,10 @@ std::string MD4_MAIN(uint32_t *message, size_t messageLength)
 
     //Process and output hashed message
     std::ostringstream md4Message;
-    md4Message << std::hex << std::setfill('0') << std::setw(8) << endia(A);
-    md4Message << std::hex << std::setfill('0') << std::setw(8) << endia(B);
-    md4Message << std::hex << std::setfill('0') << std::setw(8) << endia(C);
-    md4Message << std::hex << std::setfill('0') << std::setw(8) << endia(D);
+    md4Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(A);
+    md4Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(B);
+    md4Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(C);
+    md4Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(D);
     return md4Message.str();
 }
 

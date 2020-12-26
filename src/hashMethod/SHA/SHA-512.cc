@@ -7,6 +7,7 @@ https://csrc.nist.gov/csrc/media/publications/fips/180/4/final/documents/fips180
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include "./SHA.h"
 
 std::string SHA512_MAIN(uint8_t *message, size_t messageLength)
 {
@@ -74,7 +75,7 @@ std::string SHA512_MAIN(uint8_t *message, size_t messageLength)
         //Expension
         for (i = 16; i < 80; i++)
         {
-            W[i] = (LLsigma1(W[i - 2]) + W[i - 7] + LLsigma0(W[i - 15]) + W[i - 16]);
+            W[i] = (SHA_LLsigma1(W[i - 2]) + W[i - 7] + SHA_LLsigma0(W[i - 15]) + W[i - 16]);
         }
 
         A = H0;
@@ -88,8 +89,8 @@ std::string SHA512_MAIN(uint8_t *message, size_t messageLength)
 
         for (i = 0; i < 80; i++)
         {
-            T1 = H + LUsigma1(E) + Ch(E, F, G) + kSHA512[i] + W[i];
-            T2 = LUsigma0(A) + Maj(A, B, C);
+            T1 = H + SHA_LUsigma1(E) + SHA_Ch(E, F, G) + SHA512_k[i] + W[i];
+            T2 = SHA_LUsigma0(A) + SHA_Maj(A, B, C);
 
             H = G;
             G = F;
@@ -111,14 +112,14 @@ std::string SHA512_MAIN(uint8_t *message, size_t messageLength)
         H7 += H;
     }
     std::ostringstream md5Message;
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H0);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H1);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H2);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H3);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H4);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H5);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H6);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << (H7);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H0);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H1);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H2);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H3);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H4);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H5);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H6);
+    md5Message << std::hex << std::setfill('0') << std::setw(16) << (H7);
     return md5Message.str();
 }
 

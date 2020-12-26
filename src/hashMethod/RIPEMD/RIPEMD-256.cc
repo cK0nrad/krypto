@@ -8,13 +8,7 @@ https://homes.esat.kuleuven.be/~bosselae/ripemd/rmd128.txt
 #include <iomanip>
 #include <sstream>
 #include <vector>
-
-#ifndef LEFTROTATE
-#define LEFTROTATE(A, N) (((A) << (N)) | ((A) >> (32 - (N))))
-#endif
-#ifndef endia
-#define endia(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
-#endif
+#include "RIPEMD.h"
 
 std::string RIPEMD256_MAIN(uint8_t *message, size_t messageLength)
 {
@@ -103,13 +97,13 @@ std::string RIPEMD256_MAIN(uint8_t *message, size_t messageLength)
                 fp = (Bp ^ Cp ^ Dp);
             }
 
-            T = LEFTROTATE((A + f + paddedMessage[16 * offset + rRIP[i]] + K), sRIP[i]);
+            T = LEFTROTATE((A + f + paddedMessage[16 * offset + RIP_r[i]] + K), RIP_s[i]);
             A = D;
             D = C;
             C = B;
             B = T;
 
-            T = LEFTROTATE((Ap + fp + paddedMessage[16 * offset + rpRIP[i]] + Kp), spRIP[i]);
+            T = LEFTROTATE((Ap + fp + paddedMessage[16 * offset + RIP_rp[i]] + Kp), RIP_sp[i]);
             Ap = Dp;
             Dp = Cp;
             Cp = Bp;
@@ -151,14 +145,14 @@ std::string RIPEMD256_MAIN(uint8_t *message, size_t messageLength)
     }
 
     std::ostringstream md5Message;
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H0);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H1);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H2);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H3);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H4);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H5);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H6);
-    md5Message << std::hex << std::setfill('0') << std::setw(8) << endia(H7);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H0);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H1);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H2);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H3);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H4);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H5);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H6);
+    md5Message << std::hex << std::setfill('0') << std::setw(8) << ENDIAN(H7);
     return md5Message.str();
 }
 

@@ -75,7 +75,7 @@ std::string SHA224_MAIN(uint8_t *message, size_t messageLength)
         //Expension
         for (i = 16; i < 64; i++)
         {
-            W[i] = (Lsigma1(W[i - 2]) + W[i - 7] + Lsigma0(W[i - 15]) + W[i - 16]);
+            W[i] = (SHA_Lsigma1(W[i - 2]) + W[i - 7] + SHA_Lsigma0(W[i - 15]) + W[i - 16]);
         }
 
         A = H0;
@@ -89,8 +89,8 @@ std::string SHA224_MAIN(uint8_t *message, size_t messageLength)
 
         for (i = 0; i < 64; i++)
         {
-            T1 = H + Usigma1(E) + Ch(E, F, G) + kSHA256[i] + W[i];
-            T2 = Usigma0(A) + Maj(A, B, C);
+            T1 = H + SHA_Usigma1(E) + SHA_Ch(E, F, G) + SHA256_k[i] + W[i];
+            T2 = SHA_Usigma0(A) + SHA_Maj(A, B, C);
 
             H = G;
             G = F;
