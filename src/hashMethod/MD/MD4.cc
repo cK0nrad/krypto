@@ -49,8 +49,8 @@ std::string MD4_MAIN(uint32_t *message, size_t messageLength)
     uint32_t D = 0x10325476;
     uint32_t AA, BB, CC, DD;
 
-    //Define X[16]
     uint32_t X[16] = {0};
+
     for (size_t offset = 0; offset < (paddedMessageLength / 16); offset++)
     {
         //Fill X[] with the 16 currents words

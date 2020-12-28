@@ -12,5 +12,8 @@
 #include "./hashMethod/RIPEMD/RIPEMD-160.cc"
 #include "./hashMethod/RIPEMD/RIPEMD-256.cc"
 #include "./hashMethod/RIPEMD/RIPEMD-320.cc"
+#include "./hashMethod/HAVAL/HAVAL-3.cc"
+#include "./hashMethod/HAVAL/HAVAL-4.cc"
+#include "./hashMethod/HAVAL/HAVAL-5.cc"
 #define MAIN_INCLUDE
 #endif

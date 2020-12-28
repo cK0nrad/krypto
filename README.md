@@ -17,9 +17,9 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [❌] FNV1A52
     [❌] FNV1A64
     [❌] GOST
-    [❌] HAVAL-3 128-160-192-224-256
-    [❌] HAVAL-4 128-160-192-224-256
-    [❌] HAVAL-5 128-160-192-224-256
+    [✔️] HAVAL-3 128-160-192-224-256
+    [✔️] HAVAL-4 128-160-192-224-256
+    [✔️] HAVAL-5 128-160-192-224-256
     [❌] JOAAT
     [✔️] MD2
     [✔️] MD4

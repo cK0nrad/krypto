@@ -1,6 +1,6 @@
 //Test file 
 let krypto = require('./index');
-let string = "a"
+let string = "krypto"
 let test =  [
     [krypto.md2(string), "MD2"],
     [krypto.md4(string), "MD4"],
@@ -20,6 +20,22 @@ let test =  [
     [krypto.ripemd160(string), "RIPEMD160"],
     [krypto.ripemd256(string), "RIPEMD256"],
     [krypto.ripemd320(string), "RIPEMD320"],
+
+    [krypto.haval3_128(string), "HAVAL3 128"],
+    [krypto.haval3_160(string), "HAVAL3 160"],
+    [krypto.haval3_192(string), "HAVAL3 192"],
+    [krypto.haval3_224(string), "HAVAL3 224"],
+    [krypto.haval3_256(string), "HAVAL3 256"],
+    [krypto.haval4_128(string), "HAVAL4 128"],
+    [krypto.haval4_160(string), "HAVAL4 160"],
+    [krypto.haval4_192(string), "HAVAL4 192"],
+    [krypto.haval4_224(string), "HAVAL4 224"],
+    [krypto.haval4_256(string), "HAVAL4 256"],
+    [krypto.haval5_128(string), "HAVAL5 128"],
+    [krypto.haval5_160(string), "HAVAL5 160"],
+    [krypto.haval5_192(string), "HAVAL5 192"],
+    [krypto.haval5_224(string), "HAVAL5 224"],
+    [krypto.haval5_256(string), "HAVAL5 256"],
 ]
 
 test.map(([a,x]) => console.log(x+ ": " +a))
