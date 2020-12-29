@@ -46,6 +46,15 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports.Set(Napi::String::New(env, "haval5_192"), Napi::Function::New(env, HAVAL5_192));
     exports.Set(Napi::String::New(env, "haval5_224"), Napi::Function::New(env, HAVAL5_224));
     exports.Set(Napi::String::New(env, "haval5_256"), Napi::Function::New(env, HAVAL5_256));
+
+    //TIGER
+    exports.Set(Napi::String::New(env, "tiger3_128"), Napi::Function::New(env, TIGER3_128));
+    exports.Set(Napi::String::New(env, "tiger3_160"), Napi::Function::New(env, TIGER3_160));
+    exports.Set(Napi::String::New(env, "tiger3_192"), Napi::Function::New(env, TIGER3_192));
+
+    exports.Set(Napi::String::New(env, "tiger4_128"), Napi::Function::New(env, TIGER4_128));
+    exports.Set(Napi::String::New(env, "tiger4_160"), Napi::Function::New(env, TIGER4_160));
+    exports.Set(Napi::String::New(env, "tiger4_192"), Napi::Function::New(env, TIGER4_192));
     return exports;
 }
 

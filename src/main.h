@@ -15,5 +15,7 @@
 #include "./hashMethod/HAVAL/HAVAL-3.cc"
 #include "./hashMethod/HAVAL/HAVAL-4.cc"
 #include "./hashMethod/HAVAL/HAVAL-5.cc"
+#include "./hashMethod/TIGER/TIGER-3.cc"
+#include "./hashMethod/TIGER/TIGER-4.cc"
 #define MAIN_INCLUDE
 #endif
