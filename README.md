@@ -38,8 +38,8 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [✔️] SHA-512
     [❌] SNEFRU
     [❌] SNEFRU256
-    [❌] TIGER-3 128-160-192
-    [❌] TIGER-4 128-160-192
+    [✔️] TIGER-3 128-160-192
+    [✔️] TIGER-4 128-160-192
     [❌] WHIRLPOOL
 
 # Usage
