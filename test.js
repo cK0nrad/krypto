@@ -52,6 +52,9 @@ let test = [
   [krypto.fnv1a256(string), "FNV1A 256"],
   [krypto.fnv1a512(string), "FNV1A 512"],
   [krypto.fnv1a1024(string), "FNV1A 1024"],
+
+  [krypto.adler32(string), "ADLER 32"],
+  [krypto.crc32(string), "CRC 32"],
 ];
 
 test.map(([a, x]) => console.log(x + ": " + a));

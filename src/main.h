@@ -17,7 +17,6 @@
 #include "./hashMethod/HAVAL/HAVAL-5.cc"
 #include "./hashMethod/TIGER/TIGER-3.cc"
 #include "./hashMethod/TIGER/TIGER-4.cc"
-
 #include "./hashMethod/FNV1/FNV1-32.cc"
 #include "./hashMethod/FNV1/FNV1-64.cc"
 #include "./hashMethod/FNV1A/FNV1A-32.cc"
@@ -26,5 +25,7 @@
 #include "./hashMethod/FNV1A/FNV1A-256.cc"
 #include "./hashMethod/FNV1A/FNV1A-512.cc"
 #include "./hashMethod/FNV1A/FNV1A-1024.cc"
+#include "./hashMethod/ADLER/ADLER-32.cc"
+#include "./hashMethod/CRC/CRC-32.cc"
 #define MAIN_INCLUDE
 #endif

@@ -66,6 +66,9 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports.Set(Napi::String::New(env, "fnv1a256"), Napi::Function::New(env, FNV1A256));
     exports.Set(Napi::String::New(env, "fnv1a512"), Napi::Function::New(env, FNV1A512));
     exports.Set(Napi::String::New(env, "fnv1a1024"), Napi::Function::New(env, FNV1A1024));
+
+    exports.Set(Napi::String::New(env, "adler32"), Napi::Function::New(env, ADLER32));
+    exports.Set(Napi::String::New(env, "crc32"), Napi::Function::New(env, CRC32));
     return exports;
 }
 

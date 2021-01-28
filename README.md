@@ -4,9 +4,8 @@ Krypto is a crypto library written in C++ as an Node.JS module.
 
 # Supported algorithm
 
-    [❌] ADLER32
-    [❌] CRC32
-    [❌] CRC32B
+    [✔️] ADLER32
+    [✔️] CRC32
     [❌] FARMHASH
     [✔️] FNV1    32-64
     [✔️] FNV1A   32-64-128-256-512-1024
