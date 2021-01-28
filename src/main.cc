@@ -55,6 +55,17 @@ Napi::Object Init(Napi::Env env, Napi::Object exports)
     exports.Set(Napi::String::New(env, "tiger4_128"), Napi::Function::New(env, TIGER4_128));
     exports.Set(Napi::String::New(env, "tiger4_160"), Napi::Function::New(env, TIGER4_160));
     exports.Set(Napi::String::New(env, "tiger4_192"), Napi::Function::New(env, TIGER4_192));
+
+    //FNV
+    exports.Set(Napi::String::New(env, "fnv132"), Napi::Function::New(env, FNV132));
+    exports.Set(Napi::String::New(env, "fnv164"), Napi::Function::New(env, FNV164));
+
+    exports.Set(Napi::String::New(env, "fnv1a32"), Napi::Function::New(env, FNV1A32));
+    exports.Set(Napi::String::New(env, "fnv1a64"), Napi::Function::New(env, FNV1A64));
+    exports.Set(Napi::String::New(env, "fnv1a128"), Napi::Function::New(env, FNV1A128));
+    exports.Set(Napi::String::New(env, "fnv1a256"), Napi::Function::New(env, FNV1A256));
+    exports.Set(Napi::String::New(env, "fnv1a512"), Napi::Function::New(env, FNV1A512));
+    exports.Set(Napi::String::New(env, "fnv1a1024"), Napi::Function::New(env, FNV1A1024));
     return exports;
 }
 

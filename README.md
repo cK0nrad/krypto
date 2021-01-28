@@ -8,14 +8,8 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [❌] CRC32
     [❌] CRC32B
     [❌] FARMHASH
-    [❌] FNV132
-    [❌] FNV164
-    [❌] FNV1A1024
-    [❌] FNV1A128
-    [❌] FNV1A32
-    [❌] FNV1A512
-    [❌] FNV1A52
-    [❌] FNV1A64
+    [✔️] FNV1    32-64
+    [✔️] FNV1A   32-64-128-256-512-1024
     [❌] GOST
     [✔️] HAVAL-3 128-160-192-224-256
     [✔️] HAVAL-4 128-160-192-224-256
@@ -27,17 +21,10 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [✔️] MD5X    2-3-4-5
     [❌] MURMUR3
     [❌] PEARSON
-    [✔️] RIPEMD128
-    [✔️] RIPEMD160
-    [✔️] RIPEMD256
-    [✔️] RIPEMD320
+    [✔️] RIPEMD  128-160-256-320
     [✔️] SHA-1
-    [✔️] SHA-224
-    [✔️] SHA-256
-    [✔️] SHA-384
-    [✔️] SHA-512
-    [❌] SNEFRU
-    [❌] SNEFRU256
+    [✔️] SHA     224-256-384-512
+    [❌] SNEFRU  128-256
     [✔️] TIGER-3 128-160-192
     [✔️] TIGER-4 128-160-192
     [❌] WHIRLPOOL

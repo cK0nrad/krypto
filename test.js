@@ -43,6 +43,15 @@ let test = [
   [krypto.tiger4_128(string), "TIGER4 128"],
   [krypto.tiger4_160(string), "TIGER4 160"],
   [krypto.tiger4_192(string), "TIGER4 192"],
+
+  [krypto.fnv132(string), "FNV1 32"],
+  [krypto.fnv164(string), "FNV1 64"],
+  [krypto.fnv1a32(string), "FNV1A 32"],
+  [krypto.fnv1a64(string), "FNV1A 64"],
+  [krypto.fnv1a128(string), "FNV1A 128"],
+  [krypto.fnv1a256(string), "FNV1A 256"],
+  [krypto.fnv1a512(string), "FNV1A 512"],
+  [krypto.fnv1a1024(string), "FNV1A 1024"],
 ];
 
 test.map(([a, x]) => console.log(x + ": " + a));
