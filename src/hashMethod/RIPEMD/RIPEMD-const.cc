@@ -1,11 +1,4 @@
-#ifndef GENERAL
-#define LEFTROTATE(A, N) (((A) << (N)) | ((A) >> (32 - (N))))
-#define RIGHTROTATE(X, N) ((X >> N) | (X << ((sizeof(X) << 3) - N)))
-#define ENDIAN(X) ((((X)&0xFF) << 24) | (((X)&0xFF00) << 8) | (((X)&0xFF0000) >> 8) | (((X)&0xFF000000) >> 24))
-#define GENERAL
-#endif
-
-#ifndef RIP
+#include <stdint.h>
 
 uint32_t
     RIP_r[80] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -31,6 +24,3 @@ uint32_t
                   9, 7, 15, 11, 8, 6, 6, 14, 12, 13, 5, 14, 13, 13, 7, 5,
                   15, 5, 8, 11, 14, 14, 6, 14, 6, 9, 12, 9, 12, 5, 15, 8,
                   8, 5, 12, 9, 12, 5, 14, 6, 8, 13, 6, 5, 15, 13, 11, 11};
-#define RIP
-
-#endif

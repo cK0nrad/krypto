@@ -5,7 +5,9 @@
 #include <vector>
 #include <cstring>
 #include <iomanip>
-#include "MD.h"
+#include "MD.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string MD4_MAIN(uint32_t *message, size_t messageLength)
 {

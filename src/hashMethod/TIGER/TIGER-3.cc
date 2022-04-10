@@ -8,7 +8,9 @@ http://www.cs.technion.ac.il/~biham/Reports/Tiger/tiger/node3.html
 #include <sstream>
 #include <vector>
 #include <bitset>
-#include "TIGER.h"
+#include "TIGER.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string TIGER3_MAIN(uint8_t *message, size_t messageLength, size_t digestSize)
 {

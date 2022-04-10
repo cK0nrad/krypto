@@ -5,7 +5,9 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-#include "FNV1A.h"
+#include "FNV1A.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 /*
 [A,n^3][B,n^2][C,n^1][D,n^0] *
@@ -18,7 +20,7 @@
 (n^3)[(DE) + (CF) + (BG) + (AH)]
 (n^2)[(DF) + (CG) + (BH)]
 (n^1)[(CH) + (DG)]
-(n^0)[(DH)]
+(n^0)[(DH)] 
 */
 
 std::string FNV1A256_MAIN(uint8_t *message, size_t messageLength)

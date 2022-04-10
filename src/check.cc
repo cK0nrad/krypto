@@ -1,3 +1,5 @@
+#include <napi.h>
+
 bool check(const Napi::CallbackInfo& info){
     if (info.Length() < 1) {
         Napi::TypeError::New(info.Env(), "Wrong number of arguments")

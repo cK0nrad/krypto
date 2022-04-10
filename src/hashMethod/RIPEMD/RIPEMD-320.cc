@@ -8,7 +8,9 @@ https://homes.esat.kuleuven.be/~bosselae/ripemd/rmd320.txt
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include "RIPEMD.h"
+#include "RIPEMD.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string RIPEMD320_MAIN(uint8_t *message, size_t messageLength)
 {

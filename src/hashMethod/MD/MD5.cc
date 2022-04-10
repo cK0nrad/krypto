@@ -8,7 +8,9 @@ https://github.com/pod32g/MD5/blob/master/md5.c
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include "MD.h"
+#include "MD.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string MD5_MAIN(uint32_t *message, size_t messageLength)
 {

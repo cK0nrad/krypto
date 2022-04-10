@@ -1,4 +1,5 @@
-#ifndef FNV1A
+#include <stdint.h>
+
 void mulOverflow(uint64_t *a, uint64_t *b, uint64_t *overflow)
 {
     *overflow = (((*a >> 8) * *b) >> 56 & 0x00000000000000FF) |
@@ -9,6 +10,7 @@ void mulOverflow(uint64_t *a, uint64_t *b, uint64_t *overflow)
                 (((*a >> 48) * *b) >> 16 & 0x0000FF0000000000) |
                 (((*a >> 56) * *b) >> 8 & 0x00FF000000000000);
 }
+
 void addOverflow(uint64_t *a, uint64_t *b, uint64_t *overflow)
 {
     *overflow = ((*a + *b) < *a);
@@ -198,5 +200,3 @@ void mul128(uint64_t *prime, uint64_t *offset)
     *(offset) += (((*(offset + 1) >> 32) * *(prime + 1)) >> 32);
     *(offset + 1) = (*(prime + 1) * *(offset + 1));
 }
-#define FNV1A
-#endif

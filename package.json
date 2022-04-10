@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/cK0nrad/krypto#readme",
   "dependencies": {
-    "node-addon-api": "^3.0.2"
+    "binding": "^3.0.3",
+    "node-addon-api": "^3.2.1"
   }
 }

@@ -1,5 +1,5 @@
 //Test file
-let krypto = require("./index");
+let krypto = require('./build/Release/krypto.node');;
 let string =  "krypto";
 let test = [
   [krypto.md2(string), "MD2"],

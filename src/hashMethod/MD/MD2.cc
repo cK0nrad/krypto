@@ -5,7 +5,9 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include "MD.h"
+#include <napi.h>
+#include "../../check.hpp"
+#include "MD.hpp"
 
 std::string MD2_MAIN(uint8_t *message, size_t messageLength)
 {

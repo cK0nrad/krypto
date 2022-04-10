@@ -1,4 +1,7 @@
 #include <string>
+#include <napi.h>
+#include "MD.hpp"
+#include "../../check.hpp"
 
 std::string MD5X2_MAIN(std::string message)
 {

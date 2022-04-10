@@ -5,6 +5,8 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string FNV1A64_MAIN(uint8_t *message, size_t messageLength)
 {

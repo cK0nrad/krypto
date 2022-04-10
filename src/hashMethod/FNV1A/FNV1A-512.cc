@@ -5,7 +5,9 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-#include "FNV1A.h"
+#include "FNV1A.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 /*
 [A,n^3][B,n^2][C,n^1][D,n^0] *

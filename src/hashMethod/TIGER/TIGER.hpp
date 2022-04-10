@@ -7,6 +7,7 @@
 #endif
 
 #ifndef TIGER
+#define TIGER
 #define TRIGER_ROUND(a, b, c, x, n)                                  \
     c ^= x;                                                          \
     a -= t1[((c) >> (0 * 8)) & 0xFF] ^ t2[((c) >> (2 * 8)) & 0xFF] ^ \
@@ -283,5 +284,5 @@ const uint64_t t4[256] =
         0xBF6C70E5F776CBB1, 0x411218F2EF552BED, 0xCB0C0708705A36A3, 0xE74D14754F986044,
         0xCD56D9430EA8280E, 0xC12591D7535F5065, 0xC83223F1720AEF96, 0xC3A0396F7363A51F};
 
-#define TIGER
+
 #endif

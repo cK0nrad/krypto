@@ -3,7 +3,9 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-#include "CRC.h"
+#include "CRC.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string CRC32_MAIN(uint8_t *message, size_t messageLength)
 {

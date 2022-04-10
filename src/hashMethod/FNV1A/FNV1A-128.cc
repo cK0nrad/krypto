@@ -5,7 +5,10 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-#include "FNV1A.h"
+#include "FNV1A.hpp"
+#include <napi.h>
+#include "../../check.hpp"
+
 
 /*
 n=2^32

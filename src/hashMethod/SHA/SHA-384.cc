@@ -7,7 +7,9 @@ https://csrc.nist.gov/csrc/media/publications/fips/180/4/final/documents/fips180
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include "./SHA.h"
+#include "./SHA.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string SHA384_MAIN(uint8_t *message, size_t messageLength)
 {

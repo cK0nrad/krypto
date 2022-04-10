@@ -1,10 +1,13 @@
 //https://tools.ietf.org/html/draft-eastlake-fnv-17
+
 #include <string>
 #include <iostream>
 #include <cstring>
 #include <iomanip>
 #include <sstream>
-#include "FNV1A.h"
+#include "FNV1A.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string FNV1A1024_MAIN(uint8_t *message, size_t messageLength)
 {

@@ -1,8 +1,7 @@
 #include <cstdio>
 #include <napi.h>
 #include <iostream>
-#include "check.cpp"
-#include "main.h"
+#include "main.hpp"
 
 Napi::Object Init(Napi::Env env, Napi::Object exports)
 {

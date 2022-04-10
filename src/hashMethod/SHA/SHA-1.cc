@@ -7,6 +7,8 @@ https://www.ietf.org/rfc/rfc3174.txt
 #include <iomanip>
 #include <sstream>
 #include <vector>
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string SHA1_MAIN(uint8_t *message, size_t messageLength)
 {

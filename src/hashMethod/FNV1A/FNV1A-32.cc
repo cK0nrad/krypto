@@ -5,6 +5,8 @@
 #include <cstring>
 #include <iomanip>
 #include <sstream>
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string FNV1A32_MAIN(uint8_t *message, size_t messageLength)
 {
@@ -29,6 +31,6 @@ Napi::Value FNV1A32(const Napi::CallbackInfo &info)
         return env.Null();
 
     std::string arg0 = info[0].As<Napi::String>();
-    Napi::String num = Napi::String::New(env, FNV132_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
+    Napi::String num = Napi::String::New(env, FNV1A32_MAIN((uint8_t *)(arg0.c_str()), arg0.length()));
     return reinterpret_cast<Napi::Value &&>(num);
 }

@@ -1,3 +1,4 @@
+
 #ifndef GENERAL
 #define LEFTROTATE(A, N) (((A) << (N)) | ((A) >> (32 - (N))))
 #define RIGHTROTATE(X, N) ((X >> N) | (X << ((sizeof(X) << 3) - N)))
@@ -6,6 +7,8 @@
 #endif
 
 #ifndef MD
+
+std::string MD5_MAIN(uint32_t *message, size_t messageLength);
 
 #define MD4_F(X, Y, Z) (((X) & (Y)) | ((~(X)) & (Z)))
 #define MD4_G(X, Y, Z) (((X) & (Y)) | ((X) & (Z)) | ((Y) & (Z)))

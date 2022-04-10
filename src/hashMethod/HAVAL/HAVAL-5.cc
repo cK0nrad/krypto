@@ -5,7 +5,9 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include "HAVAL.h"
+#include "HAVAL.hpp"
+#include <napi.h>
+#include "../../check.hpp"
 
 std::string HAVAL5_MAIN(uint32_t *message, size_t messageLength, uint16_t digestSize)
 {
