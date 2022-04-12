@@ -1,6 +1,6 @@
 # What's is it ?
 
-Krypto is a crypto library written in C++ as an Node.JS module.
+kryptojs is a NodeJS crypto module written in C++.
 
 # Supported algorithm
 
@@ -27,11 +27,36 @@ Krypto is a crypto library written in C++ as an Node.JS module.
     [✔️] TIGER-3 128-160-192
     [✔️] TIGER-4 128-160-192
     [❌] WHIRLPOOL
+    [❌] SMDB
+    [❌] DJB2
+    [❌] LOSE LOSE
 
 # Usage
 
 ```js
-const krypro = require("krypro");
-let MD5 = krypro.md5("Test"); //0cbc6611f5540bd0809a388dc95a615b
-let SDBM = krypro.sdbm("Test"); //
+const krypto = require("kryptojs");
+const crypto = require('crypto')
+
+console.time("kryptojs");
+let MD5 = krypto.md5("Test"); //0cbc6611f5540bd0809a388dc95a615b
+console.timeEnd("kryptojs");
+
+console.time("crypto")
+let hash = crypto.createHash('md5').update('Test').digest("hex")
+console.timeEnd("crypto")
+
+console.log(MD5)
+console.log(hash)
+```
+```sh
+> node test.js
+kryptojs: 0.167ms
+crypto: 0.715ms
+0cbc6611f5540bd0809a388dc95a615b
+0cbc6611f5540bd0809a388dc95a615b
+```
+# Install
+
+```sh
+npm i kryptojs
 ```
