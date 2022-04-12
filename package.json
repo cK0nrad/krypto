@@ -1,5 +1,5 @@
 {
-  "name": "kryptojs",
+  "name": "@ck0nrad/krypto",
   "version": "1.0.4",
   "description": "NodeJS hashing library writen in C++",
   "main": "index.js",
