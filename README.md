@@ -1,6 +1,6 @@
 # What's is it ?
 
-kryptojs is a NodeJS crypto module written in C++.
+krypto is a NodeJS crypto module written in C++.
 
 # Supported algorithm
 
