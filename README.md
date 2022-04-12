@@ -58,5 +58,5 @@ crypto: 0.715ms
 # Install
 
 ```sh
-npm i @cK0nrad/krypto
+npm i @ck0nrad/krypto
 ```
