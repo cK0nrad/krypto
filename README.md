@@ -34,7 +34,7 @@ krypto is a NodeJS crypto module written in C++.
 # Usage
 
 ```js
-const krypto = require("krypto");
+const krypto = require("@ck0nrad/krypto");
 const crypto = require('crypto')
 
 console.time("krypto");
