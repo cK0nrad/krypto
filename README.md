@@ -34,12 +34,12 @@ kryptojs is a NodeJS crypto module written in C++.
 # Usage
 
 ```js
-const krypto = require("kryptojs");
+const krypto = require("krypto");
 const crypto = require('crypto')
 
-console.time("kryptojs");
+console.time("krypto");
 let MD5 = krypto.md5("Test"); //0cbc6611f5540bd0809a388dc95a615b
-console.timeEnd("kryptojs");
+console.timeEnd("krypto");
 
 console.time("crypto")
 let hash = crypto.createHash('md5').update('Test').digest("hex")
@@ -50,7 +50,7 @@ console.log(hash)
 ```
 ```sh
 > node test.js
-kryptojs: 0.167ms
+krypto: 0.167ms
 crypto: 0.715ms
 0cbc6611f5540bd0809a388dc95a615b
 0cbc6611f5540bd0809a388dc95a615b
@@ -58,5 +58,5 @@ crypto: 0.715ms
 # Install
 
 ```sh
-npm i kryptojs
+npm i @cK0nrad/krypto
 ```
