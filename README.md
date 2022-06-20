@@ -1,3 +1,5 @@
+#Warning
+Full rewrite in progress due to lack of class usage.
 # What's is it ?
 
 krypto is a NodeJS crypto module written in C++.
